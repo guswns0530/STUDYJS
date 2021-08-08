@@ -170,5 +170,58 @@ window.addEventListener('load', () => {
     };
 
     log(some_obj.say.call(my_obj, '박현준')); //call의 첫번째 매개변수가 없거나 null인경우 this는 전역개체로 지정함
-    log(some_obj.say.apply(my_obj, ['박현준']));
+    log(some_obj.say.apply(my_obj, ['박현준'])); //apply는 배열로 매개변수를 받음
+
+    //인수 객체 재검토 (arguments)
+    
+    function f() {
+        var args = [].slice.apply(arguments);
+
+        return args; //arguments는 배열처럼 보이지만, 실제로는 배열과 비슷한 객체다. 인덱스된 요소와 length 속성을 폼하고 있으므로 배열과 유사하다.
+        // 그러나 유사성은 여기까지 배열 메소드를 제공하지 않는다.
+    }
+
+    log(f(1, 2, 3));
+
+    //화살표 함수에서의 어휘적 this
+    //화살표 함수에서 중요한 적은 일반 함수와 다르게 동작한다는 것이다. 그 차이는 미묘하지만 중요하다. 화살표 함수에서 this는 값이 없다.
+    //화살표 함수에는 this 값이 없다. 화살표 함수에서 this의 값은 둘러싼 (어휘적) 범위에서 상속 된다.
+
+    /*
+    어휘적 : 함수 범위를 둘러싼 범위
+    동적 : 함수를 호출하는 범위(일반적으로 객체)
+    */
+
+    var greeter = {
+        default: "Hello ",
+        greet : function (names) {
+            let that = this;
+
+            names.forEach(function(name) {
+                log(that.default + name);
+            })
+        }
+    }
+
+    greeter.greet(['world', 'heaven']);
+
+
+    greeter = {
+        default: "Hello ",
+        greet : function (names) {
+            names.forEach(name =>  {
+                log(this.default + name);
+            })
+        }
+    }
+
+    greeter.greet(['world', 'heaven']);
+
+    //객체 유형 추정
+    const toString = Object.prototype.toString.call;
+
+    let obj = {};
+    log(Object.prototype.toString.call({}));
+    log(toString(this));
+    log(toString);
 });

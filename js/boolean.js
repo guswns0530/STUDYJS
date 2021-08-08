@@ -3,10 +3,10 @@ const log = console.log;
 window.addEventListener("load", () => {
     //지연 평가
     var b = 5;
-    true || (b = 6);
+    log(true || (b = 6));
     log(b);
 
-    true && (b = 6);
+    log(true && (b = 6));
     log(b);
 
     var mynumber = mynumber || 10; //정의 되어있지 않으면 10으로 정의
