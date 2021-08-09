@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timer</title>
+    <style>
+        #time {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ccc;
+            width: 150px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="time">00:00</div>
+    <button onclick="timer.start()">시작</button>    
+    <button onclick="timer.reset()">초기화</button>
+    <button onclick="timer.stop()">스탑</button>
+    <script>
+        const log = console.log;
+
+        const timer = {
+            time: 0,
+            before: 0,
+            isTimer: false,
+            element: document.querySelector("#time"),
+
+            start() {
+                if(this.isTimer) return;
+
+                this.before = 0; 
+                this.isTimer = true;
+                requestAnimationFrame(this.savePoint.bind(this));
+            },
+
+            stop() {
+                this.isTimer= false;
+            },
+
+            reset() {
+                this.isTimer = false;
+                this.time = 0;
+                this.element.innerHTML = "00:00";
+            },
+
+            savePoint(t) {
+                this.before = t;
+                requestAnimationFrame(this.update.bind(this));
+            },
+
+            update(t) {
+                if(!this.isTimer) {
+                    alert('종료');
+                    return;
+                }
+                this.time += t - this.before;
+                this.before = t;
+
+                this.render();
+
+                requestAnimationFrame(this.update.bind(this));
+            },
+
+            render(){
+                let min= Math.round(this.time / 1000 / 60 % 60, 0);
+                let sec = Math.round(this.time / 1000 % 60, 0);
+
+                this.element.innerHTML = `${min < 10 ? "0" + min : min}:${sec < 10 ? "0" + sec : sec}`;
+            }
+        }
+    </script>
+</body>
+</html>
