@@ -490,4 +490,94 @@ window.addEventListener('load', () => {
     log("stoyan@phpied.com".replace(re, callback));
     log(glob);
 
+    //split()
+    var csv = 'one, two,three ,four';
+    log(csv.split(',')); //싐표 앞 뒤에 일치하지 않는 공백이 있기 때문에, 배열 결과에도 공백이 있다.
+    //\s*는 0개 이상의 공백을 의미한다.\
+    log(csv.split(/\s*,\s*/));
+
+    //RegExp가 필요할 때 문자열 전달
+
+    "test".replace('t', 'r'); /* == */ log("test".replace(/t/, 'r'));
+
+    log("pool".replace('o', '*')); //g 한정자가 디폴트로 false이기 때문에 첫번째만 바뀜
+    log("pool".replace(/o/g, "*"));
+
+    //Error 객체
+    /*
+    EvalError, RangeError, ReferenceError, SyntaxError, TypeError, URIError
+    */
+
+   try {
+        iDontExist(); //에러 호출
+    } catch (error) {
+        log(error.name, error.message);
+    } finally {
+        log('Finally!');
+    }
+
+    try {
+        var total = maybeExists();
+        if(total === 0) {
+            throw new Error('Division by zero!');
+        } else {
+            log(50 / total);
+        }
+    } catch(e) {
+        log(e.name + ": " + e.message);
+    } finally {
+        log('finally');
+    }
+
+    function maybeExists() {
+        return 0;
+    }
+
+    //연습문제
+
+    function F() {
+        'use strict';
+        this.name = '박현준';
+
+        function C() {
+            return this;
+        }
+        // let C = () => {
+        //     return this;
+        // }
+        return C();
+    }
+
+    var o = new F(); //만약에 Arror함수를 사용했더라면 F객체를 반환함
+
+    log(o); //o객체 참조
+
+    function C() {
+        this.a = 1;
+        return false;
+    }
+
+    log(typeof new C());
+
+    let c = [1, 2, [1, 2]];
+    c.sort();
+    log(c.join('--'));
+    
+    function MyString(args) {
+        
+        //문자열로 변환
+        this._value = '' + args;
+        
+        var i = 0;
+        while(args[i] !== undefined) {
+            this[i] = args[i];
+            i++;
+        }
+
+        
+    }
+
+    var s = new MyString('hello');
+    
+    log(s.toString());
 });
